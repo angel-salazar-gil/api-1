@@ -25,6 +25,7 @@ Route::group(['prefix' => 'auth'], function() {
       });
 });
 Route::get('/api1', 'Api1Controller@Api1');
+Route::apiResource("permisos", "PermisosController");
 
 //Route::group(['middleware' => 'auth'], function() {  
 //});
