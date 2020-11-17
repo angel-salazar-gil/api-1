@@ -37,23 +37,23 @@ class PermisosController extends Controller
      */
     public function store(Request $request)
     {
-        //$data = Http::get('https://apis.roo.gob.mx/repositorio/api_documentostramite.php?ews_curp=BACG790327HYNSBV05&ews_token=ShvlfefemkTDrwwR4MF2p5nxLdnmaXdiV_7W3cZyevJHC8gLj5UXnvkCEoeNRX7cNNbYk5YQycBnx_BJXqADLz2Nk0xEWUZzZNMKULBc7agNdK9ZBqqzaTAJ1UiBQjvffk_FWCZg1kroBd6ZlIQNhQi8XDhxRVsKm7jwdtr5gmSqzaW76Ypur%20ooyCJR60GLVxwju8&ews_id_tramite=7&=')->json();
-        $permiso = Permisos::create($request->all());
-        return $permiso;
-        /*
+        $data = Http::get('https://apis.roo.gob.mx/repositorio/api_documentostramite.php?ews_curp=BACG790327HYNSBV05&ews_token=ShvlfefemkTDrwwR4MF2p5nxLdnmaXdiV_7W3cZyevJHC8gLj5UXnvkCEoeNRX7cNNbYk5YQycBnx_BJXqADLz2Nk0xEWUZzZNMKULBc7agNdK9ZBqqzaTAJ1UiBQjvffk_FWCZg1kroBd6ZlIQNhQi8XDhxRVsKm7jwdtr5gmSqzaW76Ypur%20ooyCJR60GLVxwju8&ews_id_tramite=7&=')->json();
+        //$permiso = Permisos::create($request->all());
+        
+        return $request;
         $permiso = new permisos();
-        $permiso->marca = $data->wsp_mensaje;
-        $permiso->tipo = $data->wsp_curp;
-        $permiso->color_vehiculo = $data->wsp_id_documento;
-        $permiso->placas = $data->wsp_codigo;
-        $permiso->tonelada_maniobra = $data->wsp_tipo_documento;
-        $permiso->nombre_chofer = $data->wsp_descripcion_documento;
-        $permiso->licencia = $data->wsp_fecha_documento;
-        $permiso->persona_razon_social = $data->wsp_estado;
-        $permiso->comercio_denominado = $data->wsp_fecha_solicitud;
-        $permiso->direccion = $data->wsp_mensaje;
-        $permiso->horarios = $data->wsp_curp;
-        $permiso->save();*/
+        $permiso->marca = $request->marca;
+        $permiso->tipo = $request->tipo;
+        $permiso->color_vehiculo = $request->color_vehiculo;
+        $permiso->placas = $request->placas;
+        $permiso->tonelada_maniobra = $request->tonelada_maniobra;
+        $permiso->nombre_chofer = $request->nombre_chofer;
+        $permiso->licencia = $request->licencia;
+        $permiso->persona_razon_social = $request->persona_razon_social;
+        $permiso->comercio_denominado = $request->comercio_denominado;
+        $permiso->direccion = $request->direccion;
+        $permiso->horarios = $request->horarios;
+        $permiso->save();
         
         //return response()->json(["mensaje" => "pago creado correctamente"], 201);
     }
