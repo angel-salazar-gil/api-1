@@ -13,10 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::apiResource("//permisos", "PermisosController");
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post("//api1", "Api1Controller@Api1");

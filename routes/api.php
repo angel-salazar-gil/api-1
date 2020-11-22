@@ -25,8 +25,7 @@ Route::group(['prefix' => 'auth'], function() {
       });
 });
 
-Route::get('/api2', 'Api1Controller@Api1');
+Route::any('api1', "Api1Controller@store");
+
 Route::apiResource("permisos", "PermisosController");
 
-//Route::group(['middleware' => 'auth'], function() {  
-//});
