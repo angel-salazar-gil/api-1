@@ -4,20 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Permisos;
 use App\Solicitudes;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class Api1Controller extends Controller
 {
 
     public function store(Request $request)
     {
+        if($request->ews_id_tramite != "11")
+        {
+            return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
+        }
+
+        $rules = Validator::make($request->all(),[
+            'ews_llave' => 'required',
+            'ews_id_tramite' => 'required',
+            'ews_no_solicitud' => 'required',
+            'ews_fecha_solicitud' => 'required',
+            'ews_hora_solicitud' => 'required',
+            'ews_no_solicitud_api' => 'required',
+
+            'ews_color_vehiculo' => 'required',
+            'ews_tonelada_maniobra' => 'required',
+            'ews_licencia' => 'required',
+            'ews_persona_razon_social' => 'required',
+            'ews_comercio_denominado' => 'required',
+            'ews_direccion' => 'required'
+        ]);
+
         $solicitud = new solicitudes();
-        $solicitud->no_solicitud_api = $request->ews_no_solicitud;
         $solicitud->llave = $request->ews_llave;
         $solicitud->id_tramite = $request->ews_id_tramite;
-        $solicitud->fecha_solicitud = $request->ews_fecha_solicitud_api;
-        $solicitud->hora_solicitud = $request->ews_hora_solicitud_api;
+        $solicitud->no_solicitud = $request->ews_no_solicitud;
+        $solicitud->fecha_solicitud = $request->ews_fecha_solicitud;
+        $solicitud->hora_solicitud = $request->ews_hora_solicitud;
+        $solicitud->fecha_solicitud_api = date("Y-m-d");
+        $solicitud->hora_solicitud_api = date("H:i:s", time());
+
+        if($rules->fails())
+        {
+            $solicitud->no_solicitud_api = 0;
+            $solicitud->id_estado = 2;
+            $solicitud->save();
+
+            //$fieldsWithErrorMessagesArray = $rules->messages()->get('*');
+            //return $this->errorResponse($fieldsWithErrorMessagesArray, Response::HTTP_UNPROCESSABLE_ENTITY);
+
+            return response()->json(["wps_mensaje" => "Algun dato está en blanco o es incorrecto"], 400);
+        }
+
+        $solicitud->no_solicitud_api = $request->ews_no_solicitud_api;
+        $solicitud->id_estado = 1;
         $solicitud->save();
 
         $permiso = new permisos();
@@ -29,23 +70,15 @@ class Api1Controller extends Controller
         $permiso->direccion = $request->ews_direccion;
         $permiso->save();
 
-        $no_solicitud_api = $request->ews_no_solicitud;
-        $color_vehiculo = $request->ews_color_vehiculo;
-        $tonelada_maniobra = $request->ews_tonelada_maniobra;
-        $licencia = $request->ews_licencia;
-        $persona_razon_social = $request->ews_persona_razon_social;
-        $comercio_denominado = $request->ews_comercio_denominado;
-        $direccion = $request->ews_direccion;
-
-        if($tonelada_maniobra < 8000){
+        if($request->ews_tonelada_maniobra < 8000){
             $horario = "06:00 A 22:00 HORAS";
         }else{
             $horario = "22:00 A 06:00 HORAS";
         }
         
         return response()->json([
-            "wsp_no_solicitud" => "2020-0000000001",
-            "wsp_no_solicitud_api" => $no_solicitud_api,
+            "wsp_no_solicitud" => $request->ews_no_solicitud,
+            "wsp_no_solicitud_api" => $request->ews_no_solicitud_api,
             "wsp_mensaje" => "Datos encontrados de la solicitud",
             "wsp_nivel" => 1,
             "wsp_datos" =>(Object)[
@@ -63,7 +96,7 @@ class Api1Controller extends Controller
                     ],
                     "3" => (Object)[
                         "0" => "Color",
-                        "1" => $color_vehiculo
+                        "1" => $request->ews_color_vehiculo
                     ],
                     "4" => (Object)[
                         "0" => "Placas",
@@ -71,7 +104,7 @@ class Api1Controller extends Controller
                     ],
                     "5" => (Object)[
                         "0" => "Toneladas",
-                        "1" => $tonelada_maniobra
+                        "1" => $request->ews_tonelada_maniobra
                     ],
                     "6" => (Object)[
                         "0" => "Nombre del chofer",
@@ -79,19 +112,19 @@ class Api1Controller extends Controller
                     ],
                     "7" => (Object)[
                         "0" => "Número de licencia",
-                        "1" => $licencia
+                        "1" => $request->ews_licencia
                     ],
                     "8" => (Object)[
                         "0" => "Persona fisica o razón social",
-                        "1" => $persona_razon_social
+                        "1" => $request->ews_persona_razon_social
                     ],
                     "9" => (Object)[
                         "0" => "Comercio denominado",
-                        "1" => $comercio_denominado
+                        "1" => $request->ews_comercio_denominado
                     ],
                     "10" => (Object)[
                         "0" => "Drección",
-                        "1" => $direccion
+                        "1" => $request->ews_direccion
                     ],
                     "11" => (Object)[
                         "0" => "Horario",

@@ -15,17 +15,17 @@ class CreatePermisosTable extends Migration
     {
         Schema::create('permisos', function (Blueprint $table) {
             $table->id();
-            $table->string('marca');
-            $table->string('tipo');
-            $table->string('color_vehiculo');
-            $table->string('placas');
-            $table->string('tonelada_maniobra');
-            $table->string('nombre_chofer');
-            $table->string('licencia');
-            $table->string('persona_razon_social');
-            $table->string('comercio_denominado');
-            $table->string('direccion');
-            $table->string('horarios');
+            $table->string('marca')->nullable();
+            $table->string('tipo')->nullable();
+            $table->string('color_vehiculo')->nullable();
+            $table->string('placas')->nullable();
+            $table->string('tonelada_maniobra')->nullable();
+            $table->string('nombre_chofer')->nullable();
+            $table->string('licencia')->nullable();
+            $table->string('persona_razon_social')->nullable();
+            $table->string('comercio_denominado')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('horarios')->nullable();
             $table->timestamps();
         });
     }
