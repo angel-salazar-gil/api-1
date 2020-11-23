@@ -21,11 +21,9 @@ class Api1Controller extends Controller
             'ews_no_solicitud' => 'required',
             'ews_fecha_solicitud' => 'required',
             'ews_hora_solicitud' => 'required',
-            'ews_no_solicitud_api' => 'required',
 
             'ews_color_vehiculo' => 'required',
             'ews_tonelada_maniobra' => 'required',
-            'ews_licencia' => 'required',
             'ews_persona_razon_social' => 'required',
             'ews_comercio_denominado' => 'required',
             'ews_direccion' => 'required'
@@ -39,10 +37,10 @@ class Api1Controller extends Controller
         $solicitud->hora_solicitud = $request->ews_hora_solicitud;
         $solicitud->fecha_solicitud_api = date("Y-m-d");
         $solicitud->hora_solicitud_api = date("H:i:s", time());
-
+        $no_solicitud_api = "2020-0001";
         if($rules->fails())
         {
-            $solicitud->no_solicitud_api = 0;
+            $solicitud->no_solicitud_api = $no_solicitud_api;
             $solicitud->id_estado = 2;
             $solicitud->save();
 
@@ -57,14 +55,13 @@ class Api1Controller extends Controller
             return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
-        $solicitud->no_solicitud_api = $request->ews_no_solicitud_api;
+        $solicitud->no_solicitud_api = $no_solicitud_api;
         $solicitud->id_estado = 1;
         $solicitud->save();
 
         $permiso = new permisos();
         $permiso->color_vehiculo = $request->ews_color_vehiculo;
         $permiso->tonelada_maniobra = $request->ews_tonelada_maniobra;
-        $permiso->licencia = $request->ews_licencia;
         $permiso->persona_razon_social = $request->ews_persona_razon_social;
         $permiso->comercio_denominado = $request->ews_comercio_denominado;
         $permiso->direccion = $request->ews_direccion;
@@ -78,7 +75,7 @@ class Api1Controller extends Controller
         
         return response()->json([
             "wsp_no_solicitud" => $request->ews_no_solicitud,
-            "wsp_no_solicitud_api" => $request->ews_no_solicitud_api,
+            "wsp_no_solicitud_api" => $no_solicitud_api,
             "wsp_mensaje" => "Datos encontrados de la solicitud",
             "wsp_nivel" => 1,
             "wsp_datos" =>(Object)[
@@ -112,7 +109,7 @@ class Api1Controller extends Controller
                     ],
                     "7" => (Object)[
                         "0" => "Número de licencia",
-                        "1" => $request->ews_licencia
+                        "1" => ""
                     ],
                     "8" => (Object)[
                         "0" => "Persona fisica o razón social",
