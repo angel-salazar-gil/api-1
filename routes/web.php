@@ -20,7 +20,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(["middleware" => "ews_token"], function () {
+Route::group(["middleware" => "apikey.token"], function () {
 Route::apiResource("//permisos", "PermisosController");
 });
 Route::post("//api1", "Api1Controller@Api1");
