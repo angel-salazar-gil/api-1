@@ -15,11 +15,6 @@ class Api1Controller extends Controller
 
     public function store(Request $request)
     {
-        if($request->ews_id_tramite != "11")
-        {
-            return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
-        }
-
         $rules = Validator::make($request->all(),[
             'ews_llave' => 'required',
             'ews_id_tramite' => 'required',
@@ -55,6 +50,11 @@ class Api1Controller extends Controller
             //return $this->errorResponse($fieldsWithErrorMessagesArray, Response::HTTP_UNPROCESSABLE_ENTITY);
 
             return response()->json(["wps_mensaje" => "Algun dato está en blanco o es incorrecto"], 400);
+        }
+
+        if($request->ews_id_tramite != "11")
+        {
+            return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
         $solicitud->no_solicitud_api = $request->ews_no_solicitud_api;
