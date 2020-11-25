@@ -60,6 +60,13 @@ class Api1Controller extends Controller
             return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
+        //Asignacion del horario de la maniobra segun el tonelaje
+        if($request->ews_tonelada_maniobra < 8000){
+            $horario = "06:00 A 22:00 HORAS";
+        }else{
+            $horario = "22:00 A 06:00 HORAS";
+        }
+
         //Guardado de los datos en la tabla Solicitudes
         $solicitud = new solicitudes();
         $solicitud->llave = $request->ews_llave;
@@ -81,14 +88,8 @@ class Api1Controller extends Controller
         $permiso->persona_razon_social = $request->ews_persona_razon_social;
         $permiso->comercio_denominado = $request->ews_comercio_denominado;
         $permiso->direccion = $request->ews_direccion;
+        $permiso->horarios = $horario;
         $permiso->save();
-
-        //Asignacion del horario de la maniobra segun el tonelaje
-        if($request->ews_tonelada_maniobra < 8000){
-            $horario = "06:00 A 22:00 HORAS";
-        }else{
-            $horario = "22:00 A 06:00 HORAS";
-        }
         
         //Salida de los datos correctos
         return response()->json([
