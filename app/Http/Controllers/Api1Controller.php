@@ -38,6 +38,8 @@ class Api1Controller extends Controller
         $config=['table'=>'solicitudes','length'=>15,'prefix'=>date("Y")];
         $no_solicitud_api = IdGenerator::generate($config) + Solicitudes::count();
 
+        $solicitud = new solicitudes();
+
         //Captura de los errores en la validacion de campos requeridos
         if($rules->fails())
         {
@@ -49,7 +51,7 @@ class Api1Controller extends Controller
             //return $this->errorResponse($fieldsWithErrorMessagesArray, Response::HTTP_UNPROCESSABLE_ENTITY);
             //Impresion de los campos faltantes
             return response()->json([
-                "wps_mensaje" => "La solicitud no fue valida",
+                "wsp_mensaje" => "La solicitud no fue valida",
                 "wsp_campos_faltantes" => $fieldsWithErrorMessagesArray
             ], 400);
         }
@@ -68,7 +70,6 @@ class Api1Controller extends Controller
         }
 
         //Guardado de los datos en la tabla Solicitudes
-        $solicitud = new solicitudes();
         $solicitud->llave = $request->ews_llave;
         $solicitud->id_tramite = $request->ews_id_tramite;
         $solicitud->no_solicitud = $request->ews_no_solicitud;
