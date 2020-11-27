@@ -25,15 +25,8 @@ Route::group(['prefix' => 'auth'], function() {
       });
 });
 
-<<<<<<< HEAD
 Route::any('api1', "Api1Controller@store");
 //Route::group(["middleware" => "ews.token"], function () {
 //Route::apiResource("permisos", "PermisosController");
 //});
 
-=======
-Route::group(["middleware" => "ews_token"], function () {
-    Route::any('api1', "Api1Controller@store");
-    Route::apiResource("permisos", "PermisosController");
-});
->>>>>>> c64e50b2cc5259b556d66d42ada572b901ab8997
