@@ -29,3 +29,5 @@ Route::group(["middleware" => "apikey.token"], function () {
     Route::any('api1', "Api1Controller@store");
     Route::apiResource("permisos", "PermisosController");
 });
+
+//Route::any('pdf', "PDFController@PDF");

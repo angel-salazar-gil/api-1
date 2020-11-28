@@ -62,6 +62,12 @@ class Api1Controller extends Controller
             return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
+        //Extraccion de datos de los requisitos subidos | API-4 Potys
+        $marca = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_vehiculo'];
+        $tipo = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_modelo'];
+        $placas = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_placas'];
+        $nombre_chofer = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_nombre'];
+
         //Asignacion del horario de la maniobra segun el tonelaje
         if($request->ews_tonelada_maniobra < 8000){
             $horario = "06:00 A 22:00 HORAS";
@@ -84,8 +90,12 @@ class Api1Controller extends Controller
 
         //Guardado de los datos en la tabla Permisos
         $permiso = new permisos();
+        $permiso->marca = $marca;
+        $permiso->tipo = $tipo;
         $permiso->color_vehiculo = $request->ews_color_vehiculo;
+        $permiso->placas = $placas;
         $permiso->tonelada_maniobra = $request->ews_tonelada_maniobra;
+        $permiso->nombre_chofer = $nombre_chofer;
         $permiso->persona_razon_social = $request->ews_persona_razon_social;
         $permiso->comercio_denominado = $request->ews_comercio_denominado;
         $permiso->direccion = $request->ews_direccion;
@@ -105,11 +115,11 @@ class Api1Controller extends Controller
                     ],
                     "1" => (Object)[
                         "0" => "Marca",
-                        "1" => ""
+                        "1" => $marca
                     ],
                     "2" => (Object)[
                         "0" => "Tipo",
-                        "1" => ""
+                        "1" => $tipo
                     ],
                     "3" => (Object)[
                         "0" => "Color",
@@ -117,7 +127,7 @@ class Api1Controller extends Controller
                     ],
                     "4" => (Object)[
                         "0" => "Placas",
-                        "1" => ""
+                        "1" => $placas
                     ],
                     "5" => (Object)[
                         "0" => "Toneladas",
@@ -125,7 +135,7 @@ class Api1Controller extends Controller
                     ],
                     "6" => (Object)[
                         "0" => "Nombre del chofer",
-                        "1" => ""
+                        "1" => $nombre_chofer
                     ],
                     "7" => (Object)[
                         "0" => "Número de licencia",
