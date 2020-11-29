@@ -7,6 +7,8 @@
     <header>
     </header>
     {{--<img src="/public/assets/img/encabezado.jpg" alt="">--}}
+    {{--<img src="{{ asset('assets/img/logo.png')}}" alt="BTS">--}}
+    <img src="assets/img/logo1.png" width="60" height="60" alt="">
     <div class="container">
         <p class="tittle">PERMISO PARA REALIZAR MANIOBRAS DE CARGA Y DESCARGA</p>
         <div class="container">

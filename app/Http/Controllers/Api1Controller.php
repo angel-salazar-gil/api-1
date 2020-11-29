@@ -57,7 +57,7 @@ class Api1Controller extends Controller
             $tokenacceso->mensaje = "Datos faltantes en el formulario";
             $tokenacceso->codigo = 400;
             $tokenacceso->token_id = 1;
-            //$tokenacceso->save();
+            $tokenacceso->save();
 
             $fieldsWithErrorMessagesArray = $rules->messages()->get('*');
             //return $this->errorResponse($fieldsWithErrorMessagesArray, Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -96,7 +96,7 @@ class Api1Controller extends Controller
         $tokenacceso->mensaje = "Ciudadano encontrado";
         $tokenacceso->codigo = 200;
         $tokenacceso->token_id = 1;
-        //$tokenacceso->save();
+        $tokenacceso->save();
 
         //Guardado de los datos en la tabla Permisos
         $permiso = new permisos();
@@ -111,7 +111,7 @@ class Api1Controller extends Controller
         $permiso->direccion = $request->ews_direccion;
         $permiso->horarios = $horario;
         $permiso->no_solicitud_api = $no_solicitud_api;
-        //$permiso->save();
+        $permiso->save();
 
         //Guardado de los datos en la tabla Solicitudes
         $solicitud->llave = $request->ews_llave;
@@ -124,7 +124,7 @@ class Api1Controller extends Controller
 
         $solicitud->no_solicitud_api = $no_solicitud_api;
         $solicitud->id_estado = 1;
-        //$solicitud->save();
+        $solicitud->save();
         
         //Salida de los datos correctos
         return response()->json([
