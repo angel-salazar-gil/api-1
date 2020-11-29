@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Permisos;
 use App\Solicitudes;
+use App\Tokensaccesos;
 use App\Http\Controllers\Controller;
+use App\Helpers\UserSystemInfoHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
@@ -16,6 +18,9 @@ class Api1Controller extends Controller
 
     public function store(Request $request)
     {
+        //Optencion del IP del solicitante
+        $getip = UserSystemInfoHelper::get_ip();
+
         //Validacion de los campos requeridos
         $rules = Validator::make($request->all(),[
             //Datos de plataforma
@@ -43,9 +48,16 @@ class Api1Controller extends Controller
         //Captura de los errores en la validacion de campos requeridos
         if($rules->fails())
         {
-            $solicitud->no_solicitud_api = $no_solicitud_api;
-            $solicitud->id_estado = 2;
-            $solicitud->save();
+            //Guardado de los datos de entrada del TOKEN
+            $tokenacceso = new tokensaccesos();
+            $tokenacceso->fecha = date("Y-m-d");
+            $tokenacceso->hora = date("H:i:s", time());
+            $tokenacceso->ip = $getip;
+            $tokenacceso->dato_clave = $request->ews_curp;
+            $tokenacceso->mensaje = "Datos faltantes en el formulario";
+            $tokenacceso->codigo = 400;
+            $tokenacceso->token_id = 1;
+            //$tokenacceso->save();
 
             $fieldsWithErrorMessagesArray = $rules->messages()->get('*');
             //return $this->errorResponse($fieldsWithErrorMessagesArray, Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -74,6 +86,17 @@ class Api1Controller extends Controller
         }else{
             $horario = "22:00 A 06:00 HORAS";
         }
+        
+        //Guardado de los datos de entrada del TOKEN
+        $tokenacceso = new tokensaccesos();
+        $tokenacceso->fecha = date("Y-m-d");
+        $tokenacceso->hora = date("H:i:s", time());
+        $tokenacceso->ip = $getip;
+        $tokenacceso->dato_clave = $request->ews_curp;
+        $tokenacceso->mensaje = "Ciudadano encontrado";
+        $tokenacceso->codigo = 200;
+        $tokenacceso->token_id = 1;
+        //$tokenacceso->save();
 
         //Guardado de los datos en la tabla Permisos
         $permiso = new permisos();
@@ -87,7 +110,8 @@ class Api1Controller extends Controller
         $permiso->comercio_denominado = $request->ews_comercio_denominado;
         $permiso->direccion = $request->ews_direccion;
         $permiso->horarios = $horario;
-        $permiso->save();
+        $permiso->no_solicitud_api = $no_solicitud_api;
+        //$permiso->save();
 
         //Guardado de los datos en la tabla Solicitudes
         $solicitud->llave = $request->ews_llave;
@@ -100,7 +124,7 @@ class Api1Controller extends Controller
 
         $solicitud->no_solicitud_api = $no_solicitud_api;
         $solicitud->id_estado = 1;
-        $solicitud->save();
+        //$solicitud->save();
         
         //Salida de los datos correctos
         return response()->json([

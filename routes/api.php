@@ -30,4 +30,4 @@ Route::group(["middleware" => "apikey.token"], function () {
     Route::apiResource("permisos", "PermisosController");
 });
 
-//Route::any('pdf', "PDFController@PDF");
+Route::any('pdf', "PDFController@PDF");

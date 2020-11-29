@@ -36,9 +36,10 @@ class AuthController extends Controller
         ]);
 
         $credentials = request(['email', 'password']);
-        if (!Auth::attempt($credentials))
+        if (!Auth::attempt($credentials)){
             return response()->json([
                 'message' => 'Acceso No autorizado'], 401);
+        }
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');

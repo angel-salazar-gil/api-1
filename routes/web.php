@@ -25,4 +25,4 @@ Route::get('/', function () {
 //});
 //Route::post("//api1", "Api1Controller@Api1");
 
-Route::any('pdf', "PDFController@PDF");
+//Route::any('pdf', "PDFController@PDF");

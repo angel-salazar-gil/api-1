@@ -26,6 +26,7 @@ class CreatePermisosTable extends Migration
             $table->string('comercio_denominado')->nullable();
             $table->string('direccion')->nullable();
             $table->string('horarios')->nullable();
+            $table->string('no_solicitud_api')->nullable();
             //$table->integer('id_solicitud')->unsigned();
             //$table->foreign('id_solicitud')->references('id')->on ('solicitudes');
             //$table->integer('firmantes_id')->unsigned();

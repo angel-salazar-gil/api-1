@@ -14,15 +14,15 @@ class CreateTokensaccesosTable extends Migration
     public function up()
     {
         Schema::create('tokensaccesos', function (Blueprint $table) {
-            $table->smallInteger('id');
-            $table->date('fecha');
-            $table->time('hora');
-            $table->string('ip');
-            $table->string('dato_clave');
-            $table->string('mensaje');
-            $table->string('codigo');
+            $table->increments('id');
+            $table->date('fecha')->nullable();
+            $table->time('hora')->nullable();
+            $table->string('ip')->nullable();
+            $table->string('dato_clave')->nullable();
+            $table->string('mensaje')->nullable();
+            $table->string('codigo')->nullable();
             $table->Integer('token_id')->unsigned();
-            $table->foreign('token_id')->references('id')->on ('tokens');
+            //$table->foreign('token_id')->references('id')->on ('tokens');
             $table->timestamps();
         });
     }

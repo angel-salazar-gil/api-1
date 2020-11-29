@@ -3,19 +3,36 @@
 namespace App\Http\Controllers;
 
 use PDF;
-//use App\Permisos;
+use App\Permisos;
 use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\DB;
+use DB;
 
 class PDFController extends Controller
 {
-    public function PDF()
+    public function PDF(Request $request)
     {
-        //$permisos = Permisos::all();
-        //$permisos = DB::table('permisos')->find(3);
-        //return $permisos;
+        $token = DB::table('tokens')->where('id', 1)->value('token');
 
-        $pdf = PDF::loadView('pdfpermiso');
-        return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
+        if ($request->ews_token != $token) {
+            return response()->json([
+                'wps_mensaje' => 'TOKEN invalido o inexistente',
+            ], 403);
+        }else{
+
+            $numero_permiso = DB::table('permisos')->where('no_solicitud_api', $request->ews_no_solicitud)->value('no_solicitud_api');
+
+            if ($numero_permiso == null) {
+                return response()->json([
+                    'wps_mensaje' => 'Numero de solicitud no encontrada en la Base de Datos',
+                ], 400);
+            }else{
+                $permisos = DB::table('permisos')
+                    ->where('no_solicitud_api','=',$request->ews_no_solicitud)
+                    ->get();
+                
+                $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
+                return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
+            }
+        }
     }
 }

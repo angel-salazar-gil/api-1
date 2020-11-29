@@ -3,6 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Tokensaccesos;
+use Illuminate\Http\Request;
+use App\Helpers\UserSystemInfoHelper;
+
+use App\Http\Controllers\Controller;
 
 class ApikeyToken
 {
@@ -13,12 +18,26 @@ class ApikeyToken
      * @param  \Closure  $next
      * @return mixed
      */
+
     public function handle($request, Closure $next)
     {
+        //Optencion del IP del solicitante
+        $getip = UserSystemInfoHelper::get_ip();
+
         if (!$request->has("ews_token")) {
+            //Guardado de los datos de entrada del TOKEN
+            $tokenacceso = new tokensaccesos();
+            $tokenacceso->fecha = date("Y-m-d");
+            $tokenacceso->hora = date("H:i:s", time());
+            $tokenacceso->ip = $getip;
+            $tokenacceso->dato_clave = $request->ews_curp;
+            $tokenacceso->mensaje = "TOKEN invalido o inexistente";
+            $tokenacceso->codigo = 403;
+            $tokenacceso->token_id = 1;
+            $tokenacceso->save();
             return response()->json([
-              'message' => 'Acceso no autorizado',
-            ], 401);
+              'wps_mensaje' => 'TOKEN invalido o inexistente',
+            ], 403);
           }
       
           if ($request->has("ews_token")) {
