@@ -26,12 +26,12 @@ class CreatePermisosTable extends Migration
             $table->string('comercio_denominado')->nullable();
             $table->string('direccion')->nullable();
             $table->string('horarios')->nullable();
-            $table->integer('solicitudes_id')->unsigned();
-            $table->foreign('solicitudes_id')->references('id')->on ('solicitudes');
-            $table->integer('firmantes_id')->unsigned();
-            $table->foreign('firmantes_id')->references('id')->on ('firmantes');
-            $table->integer('imagenes_pdf_id')->unsigned();
-            $table->foreign('imagenes_pdf_id')->references('id')->on ('imagenes_pdf');
+            //$table->integer('id_solicitud')->unsigned();
+            //$table->foreign('id_solicitud')->references('id')->on ('solicitudes');
+            //$table->integer('firmantes_id')->unsigned();
+            //$table->foreign('firmantes_id')->references('id')->on ('firmantes');
+            //$table->integer('imagenes_pdf_id')->unsigned();
+            //$table->foreign('imagenes_pdf_id')->references('id')->on ('imagenes_pdf');
             $table->timestamps();
         });
     }

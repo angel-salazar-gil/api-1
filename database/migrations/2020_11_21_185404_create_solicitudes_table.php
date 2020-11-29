@@ -37,8 +37,8 @@ class CreateSolicitudesTable extends Migration
             $table->string('stripe_estado')->nullable();
             $table->string('xml_url')->nullable();
             $table->tinyInteger('no_consulta')->nullable();
-            $table->Integer('estado_id')->unsigned();
-            $table->foreign('estado_id')->references('id')->on ('estados');
+            //$table->Integer('id_estado')->unsigned();
+            //$table->foreign('id_estado')->references('id')->on ('estados');
             $table->timestamps();
         });
     }

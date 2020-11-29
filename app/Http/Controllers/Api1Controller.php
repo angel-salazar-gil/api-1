@@ -35,7 +35,7 @@ class Api1Controller extends Controller
         ]);
 
         //Creación del ID de la solicitud por parte de la API-1
-        $config=['table'=>'solicitudes','length'=>15,'prefix'=>date("Y")];
+        $config=['table'=>'solicitudes','length'=>10,'prefix'=>date("Y")];
         $no_solicitud_api = IdGenerator::generate($config) + Solicitudes::count();
 
         $solicitud = new solicitudes();
@@ -75,19 +75,6 @@ class Api1Controller extends Controller
             $horario = "22:00 A 06:00 HORAS";
         }
 
-        //Guardado de los datos en la tabla Solicitudes
-        $solicitud->llave = $request->ews_llave;
-        $solicitud->id_tramite = $request->ews_id_tramite;
-        $solicitud->no_solicitud = $request->ews_no_solicitud;
-        $solicitud->fecha_solicitud = $request->ews_fecha_solicitud;
-        $solicitud->hora_solicitud = $request->ews_hora_solicitud;
-        $solicitud->fecha_solicitud_api = date("Y-m-d");
-        $solicitud->hora_solicitud_api = date("H:i:s", time());
-
-        $solicitud->no_solicitud_api = $no_solicitud_api;
-        $solicitud->id_estado = 1;
-        $solicitud->save();
-
         //Guardado de los datos en la tabla Permisos
         $permiso = new permisos();
         $permiso->marca = $marca;
@@ -101,6 +88,19 @@ class Api1Controller extends Controller
         $permiso->direccion = $request->ews_direccion;
         $permiso->horarios = $horario;
         $permiso->save();
+
+        //Guardado de los datos en la tabla Solicitudes
+        $solicitud->llave = $request->ews_llave;
+        $solicitud->id_tramite = $request->ews_id_tramite;
+        $solicitud->no_solicitud = $request->ews_no_solicitud;
+        $solicitud->fecha_solicitud = $request->ews_fecha_solicitud;
+        $solicitud->hora_solicitud = $request->ews_hora_solicitud;
+        $solicitud->fecha_solicitud_api = date("Y-m-d");
+        $solicitud->hora_solicitud_api = date("H:i:s", time());
+
+        $solicitud->no_solicitud_api = $no_solicitud_api;
+        $solicitud->id_estado = 1;
+        $solicitud->save();
         
         //Salida de los datos correctos
         return response()->json([
