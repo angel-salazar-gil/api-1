@@ -11,13 +11,13 @@ class PDFController extends Controller
 {
     public function PDF(Request $request)
     {
-        $token = DB::table('tokens')->where('id', 1)->value('token');
+        /*$token = DB::table('tokens')->where('id', 1)->value('token');
 
         if ($request->ews_token != $token) {
             return response()->json([
                 'wps_mensaje' => 'TOKEN invalido o inexistente',
             ], 403);
-        }else{
+        }else{*/
 
             $numero_permiso = DB::table('permisos')->where('folio', $request->ews_no_solicitud)->value('folio');
 
@@ -33,6 +33,6 @@ class PDFController extends Controller
                 $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
                 return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
             }
-        }
+        //}
     }
 }
