@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Closure;
 use App\Permisos;
 use App\Solicitudes;
 use App\Tokensaccesos;
@@ -74,11 +75,21 @@ class Api1Controller extends Controller
             return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
+        //Validacion de los datos de respuesta | API-4 Potys
+        $respuesta = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c');
+        
+        if ($respuesta == '{"wsp_mensaje":"El CURP proporcionado no es valido"}')  {
+            return $respuesta;
+        }
+
         //Extraccion de datos de los requisitos subidos | API-4 Potys
         $marca = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_vehiculo'];
         $tipo = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_modelo'];
         $placas = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_placas'];
         $nombre_chofer = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_nombre'];
+        $primer_apellido = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_primer_apellido'];
+        $segundo_apellido = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_segundo_apellido'];
+        $numero_licencia = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_licencia'];
 
         //Asignacion del horario de la maniobra segun el tonelaje
         if($request->ews_tonelada_maniobra < 8000){
@@ -106,11 +117,14 @@ class Api1Controller extends Controller
         $permiso->placas = $placas;
         $permiso->tonelada_maniobra = $request->ews_tonelada_maniobra;
         $permiso->nombre_chofer = $nombre_chofer;
+        $permiso->primer_apellido = $primer_apellido;
+        $permiso->segundo_apellido = $segundo_apellido;
+        $permiso->licencia = $numero_licencia;
         $permiso->persona_razon_social = $request->ews_persona_razon_social;
         $permiso->comercio_denominado = $request->ews_comercio_denominado;
         $permiso->direccion = $request->ews_direccion;
         $permiso->horarios = $horario;
-        $permiso->no_solicitud_api = $no_solicitud_api;
+        $permiso->folio = $no_solicitud_api;
         $permiso->save();
 
         //Guardado de los datos en la tabla Solicitudes

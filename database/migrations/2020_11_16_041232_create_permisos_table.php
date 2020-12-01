@@ -21,12 +21,14 @@ class CreatePermisosTable extends Migration
             $table->string('placas')->nullable();
             $table->string('tonelada_maniobra')->nullable();
             $table->string('nombre_chofer')->nullable();
+            $table->string('primer_apellido')->nullable();
+            $table->string('segundo_apellido')->nullable();
             $table->string('licencia')->nullable();
             $table->string('persona_razon_social')->nullable();
             $table->string('comercio_denominado')->nullable();
             $table->string('direccion')->nullable();
             $table->string('horarios')->nullable();
-            $table->string('no_solicitud_api')->nullable();
+            $table->string('folio')->nullable();
             //$table->integer('id_solicitud')->unsigned();
             //$table->foreign('id_solicitud')->references('id')->on ('solicitudes');
             //$table->integer('firmantes_id')->unsigned();

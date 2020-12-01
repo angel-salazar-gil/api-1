@@ -5,15 +5,14 @@
 </head>
 <body>
     <header>
+        <img class="float-left mt-3 ml-5 pl-5" src="assets/img/logo1.png" width="80" alt="">
+        <img class="float-right mt-3 mr-5 pr-5" src="assets/img/logo_2.png" height="60" alt="">
     </header>
-    {{--<img src="/public/assets/img/encabezado.jpg" alt="">--}}
-    {{--<img src="{{ asset('assets/img/logo.png')}}" alt="BTS">--}}
-    <img src="assets/img/logo1.png" width="60" height="60" alt="">
     <div class="container">
-        <p class="tittle">PERMISO PARA REALIZAR MANIOBRAS DE CARGA Y DESCARGA</p>
+        <p class="tittle mt-0 pt-0">PERMISO PARA REALIZAR MANIOBRAS DE CARGA Y DESCARGA</p>
         <div class="container">
             @foreach ($permisos as $permiso)
-            <div class="folio texto border border-3 border-dark"><b>Permiso:</b> {{ $permiso->no_solicitud_api }}</div>
+            <div class="folio texto border border-3 border-dark"><b>Permiso:</b> {{ $permiso->folio }}</div>
             @endforeach
             <div class="container">
                 <p class="texto">A QUIEN CORRESPONDA:</p>
@@ -30,15 +29,15 @@
                         @endforeach
                         <tr>
                             <td><b>Placas:</b> <br> {{ $permiso->placas }}</td>
-                            <td><b>Resibo de pago estatal:</b> <br></td>
+                            <td><b>Recibo de pago estatal:</b> <br></td>
                             <td><b>Toneladas:</b> <br> {{ $permiso->tonelada_maniobra }}</td>
                         </tr>
                         <tr>
-                            <td colspan="2"><b>Nombre del Chofer:</b> <br> {{ $permiso->nombre_chofer }}</td>
+                            <td colspan="2"><b>Nombre del Chofer:</b> <br> {{ $permiso->nombre_chofer }} {{ $permiso->primer_apellido }} {{ $permiso->segundo_apellido }}</td>
                             <td><b>Numero de licencia:</b> <br> {{ $permiso->licencia }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><b>Persona física o razón social:</b> <br> {{ $permiso->persona_razon_social }}</td>
+                            <td colspan="3"><b>Persona física o razón social:</b> {{ $permiso->persona_razon_social }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -48,13 +47,13 @@
                 <table class="table texto table-bordered">
                     <tbody>
                         <tr>
-                            <td colspan="3"><b>Comercio denominado:</b> <br> {{ $permiso->comercio_denominado }}</td>
+                            <td colspan="3"><b class=" mr-5">Comercio denominado:</b> {{ $permiso->comercio_denominado }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><b>Ubicado en:</b> <br> {{ $permiso->direccion }}</td>
+                            <td colspan="3"><b>Ubicado en:</b> {{ $permiso->direccion }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><b>Con horario según su peso bruto:</b> <br> de {{ $permiso->horarios }}</td>
+                            <td colspan="3"><b>Con horario según su peso bruto:</b> de {{ $permiso->horarios }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -68,10 +67,21 @@
                 <p class="texto text-justify">Así mismo se le exhorta para que cumpla con lo establecido en el reglamento de Tránsito del Estado de Quintana
                     Roo. Especialmente con lo dispuesto en los artículos 75, 90, 94, 222 y 228, siendo que de no cumplir con estas
                     disposiciones será acreedor a la sanción correspondiente y cancelación del permiso.</p>
-                <p class="texto text-justify">Por lo anterior tendrá la obligación de utilizar las medidas de seguridad necesarias (conos) para brindar protección
+                <p class="texto text-justify mt-0">Por lo anterior tendrá la obligación de utilizar las medidas de seguridad necesarias (conos) para brindar protección
                     a su personal y a los usuarios de la vía pública. </p>
                 <p class="texto text-justify"><b>NOTA: </b>Este permiso no exime de responsabilidad al conductor, en caso de verse involucrado en un hecho de
                     tránsito. </p>
+
+                <?php
+                    date_default_timezone_set("America/Mexico_City");
+                    $mes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"][date("n") - 1];
+                ?>
+
+                <p class="texto float-right">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p>
+
+                <p class="texto text-center mt-4"><b>Atentamente</b></p>
+                <br>
+                <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
             </div>
         </div>
     </div>
@@ -98,11 +108,12 @@
 
         .tittle{
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
+            margin-top: -2cm;
         }
 
         .texto{
-            font-size: 13px;
+            font-size: 12.5px;
         }
 
         .folio{
@@ -118,11 +129,8 @@
             top: 0cm;
             left: 0cm;
             right: 0cm;
-            height: 2.5cm;
-            background-color: lightblue;
-            color: white;
-            text-align: center;
-            line-height: 30px;
+            height: 2cm;
+            margin-bottom: -1cm;
         }
 
         footer{

@@ -19,7 +19,7 @@ class PDFController extends Controller
             ], 403);
         }else{
 
-            $numero_permiso = DB::table('permisos')->where('no_solicitud_api', $request->ews_no_solicitud)->value('no_solicitud_api');
+            $numero_permiso = DB::table('permisos')->where('folio', $request->ews_no_solicitud)->value('folio');
 
             if ($numero_permiso == null) {
                 return response()->json([
@@ -27,7 +27,7 @@ class PDFController extends Controller
                 ], 400);
             }else{
                 $permisos = DB::table('permisos')
-                    ->where('no_solicitud_api','=',$request->ews_no_solicitud)
+                    ->where('folio','=',$request->ews_no_solicitud)
                     ->get();
                 
                 $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
