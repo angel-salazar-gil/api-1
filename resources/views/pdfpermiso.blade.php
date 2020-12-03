@@ -85,8 +85,12 @@
             </div>
         </div>
     </div>
+       <div class="title m-b-md">
+   {!!QrCode::size(300)->generate("www.nigmacode.com") !!}
+</div>
     <footer>
         <p>Logos pie de pagina</p>
+     
     </footer>
 
     <style>

@@ -6,6 +6,7 @@ use PDF;
 use App\Permisos;
 use Illuminate\Http\Request;
 use DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PDFController extends Controller
 {
@@ -32,7 +33,12 @@ class PDFController extends Controller
                 
                 $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
                 return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
-            }
+                return QrCode::generate('soy un Qr');
         //}
-    }
+      //  public function generar_qr()
+    //{
+      //  return QrCode::generate('soy un Qr');
+    //}
+            }
+        }
 }

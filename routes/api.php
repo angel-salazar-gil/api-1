@@ -1,5 +1,6 @@
 <?php
 
+use App\Permisos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,8 @@ Route::group(["middleware" => "apikey.token"], function () {
 });
 
 Route::any('pdf', "PDFController@PDF");
+
+Route::any('/xmlpermiso', function(){
+$permisos = App\Permisos::all();
+return response()->xml(['permisos'=>$permisos->toArray()]);
+});
