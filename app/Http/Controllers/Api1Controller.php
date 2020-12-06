@@ -44,6 +44,10 @@ class Api1Controller extends Controller
         $config=['table'=>'solicitudes','length'=>10,'prefix'=>date("Y")];
         $no_solicitud_api = IdGenerator::generate($config) + Solicitudes::count();
 
+        //Creación del numero de folio
+        $config=['table'=>'permisos','length'=>10,'prefix'=>date("Y")];
+        $folio = IdGenerator::generate($config) + Permisos::count();
+
         $solicitud = new solicitudes();
 
         //Captura de los errores en la validacion de campos requeridos
@@ -124,7 +128,7 @@ class Api1Controller extends Controller
         $permiso->comercio_denominado = $request->ews_comercio_denominado;
         $permiso->direccion = $request->ews_direccion;
         $permiso->horarios = $horario;
-        $permiso->folio = $no_solicitud_api;
+        $permiso->folio = $folio;
         $permiso->save();
 
         //Guardado de los datos en la tabla Solicitudes
@@ -177,7 +181,7 @@ class Api1Controller extends Controller
                     ],
                     "7" => (Object)[
                         "0" => "Número de licencia",
-                        "1" => ""
+                        "1" => $numero_licencia
                     ],
                     "8" => (Object)[
                         "0" => "Persona fisica o razón social",

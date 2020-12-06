@@ -1,6 +1,6 @@
 <?php
 
-use App\Permisos;
+use App\Solicitudes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,8 +32,9 @@ Route::group(["middleware" => "apikey.token"], function () {
 });
 
 Route::any('pdf', "PDFController@PDF");
+Route::any("xml", "XMLController@XML");
 
-Route::any('/xmlpermiso', function(){
-$permisos = App\Permisos::all();
-return response()->xml(['permisos'=>$permisos->toArray()]);
+Route::get('/xml/{no_solicitud}', function($no_solicitud){
+    $permisos = App\Solicitudes::all()->where('no_solicitud','=',$no_solicitud);
+    return response()->xml(['permisos'=>$permisos->toArray()]);
 });

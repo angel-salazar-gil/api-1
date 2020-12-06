@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use PDF;
 use App\Permisos;
 use Illuminate\Http\Request;
-use DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PDFController extends Controller
@@ -31,16 +31,6 @@ class PDFController extends Controller
                 //Validación de la llave de la solicitud
                 $llave = DB::table('solicitudes')->where('no_solicitud_api', $request->ews_no_solicitud)->value('llave');
                 
-                $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
-                return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
-                return QrCode::generate('soy un Qr');
-        //}
-      //  public function generar_qr()
-    //{
-      //  return QrCode::generate('soy un Qr');
-    //}
-            }
-        }
                 if ($request->ews_llave != $llave) {
                     return response()->json([
                         'wps_mensaje' => 'Llave de la solicitud invalido o inexistente',
@@ -54,6 +44,8 @@ class PDFController extends Controller
                             'wps_mensaje' => 'ID electronico de la solicitud invalido o inexistente',
                         ], 400);
                     }else{
+                        QrCode::size(300)->generate('https://www.potys.gob.mx/validatramite/?id='.$request->ews_id_electronico, '../public/qrcodes/qrcode.svg');
+                        
                         $permisos = DB::table('permisos')
                         ->where('folio','=',$request->ews_no_solicitud)
                         ->get();

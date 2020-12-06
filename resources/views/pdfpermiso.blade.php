@@ -78,16 +78,18 @@
                 ?>
 
                 <p class="texto float-right">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p>
+                <div class="mx-auto d-block">
+                    <p class="texto text-center mt-4"><b>Atentamente</b></p>
+                    <br>
+                    <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
+                </div>
 
-                <p class="texto text-center mt-4"><b>Atentamente</b></p>
-                <br>
-                <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
+                <img class="float-left mt-2 ml-5" src="qrcodes/qrcode.svg" height="90" alt="">
+
             </div>
         </div>
     </div>
-       <div class="title m-b-md">
-   {!!QrCode::size(300)->generate("www.nigmacode.com") !!}
-</div>
+        {{--<div class="title m-b-md"> {!!QrCode::size(300)->generate("www.nigmacode.com") !!} </div>--}}
     <footer>
         <p>Logos pie de pagina</p>
      
@@ -142,7 +144,7 @@
             bottom: 0cm;
             left: 0cm;
             right: 0cm;
-            height: 2cm;
+            height: 1.5cm;
             background-color: lightblue;
             color: white;
             text-align: center;
