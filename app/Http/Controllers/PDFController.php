@@ -21,7 +21,7 @@ class PDFController extends Controller
             ], 403);
         }else{
             //Validación del numero de solicitud
-            $numero_permiso = DB::table('permisos')->where('folio', $request->ews_no_solicitud)->value('folio');
+            $numero_permiso = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('no_solicitud');
 
             if ($numero_permiso == null) {
                 return response()->json([
@@ -29,7 +29,7 @@ class PDFController extends Controller
                 ], 400);
             }else{
                 //Validación de la llave de la solicitud
-                $llave = DB::table('solicitudes')->where('no_solicitud_api', $request->ews_no_solicitud)->value('llave');
+                $llave = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('llave');
                 
                 if ($request->ews_llave != $llave) {
                     return response()->json([
@@ -37,7 +37,7 @@ class PDFController extends Controller
                     ], 400);
                 }else{
                     //Validacion del id electronico de la solicitud
-                    $id_electronico = DB::table('solicitudes')->where('no_solicitud_api', $request->ews_no_solicitud)->value('id_electronico');
+                    $id_electronico = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('id_electronico');
                     
                     if ($request->ews_id_electronico != $id_electronico) {
                         return response()->json([
@@ -46,12 +46,14 @@ class PDFController extends Controller
                     }else{
                         QrCode::size(300)->generate('https://www.potys.gob.mx/validatramite/?id='.$request->ews_id_electronico, '../public/qrcodes/qrcode.svg');
                         
-                        $permisos = DB::table('permisos')
-                        ->where('folio','=',$request->ews_no_solicitud)
+                        $permisos = DB::table('solicitudes')
+                        ->join('permisos', 'solicitudes.id', '=', 'permisos.id_solicitud')
+                        ->select('*')
+                        ->where('solicitudes.no_solicitud','=',$request->ews_no_solicitud)
                         ->get();
                     
                         $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
-                        return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
+                        return $pdf->download('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
                     }
                 }
             }

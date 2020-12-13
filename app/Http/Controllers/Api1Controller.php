@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Closure;
+use DB;
 use App\Permisos;
 use App\Solicitudes;
 use App\Tokensaccesos;
@@ -79,24 +80,40 @@ class Api1Controller extends Controller
             return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
+        //Validacion de la API-5 Potys
+        $validacion = Http::get('https://apis.roo.gob.mx/repositorio/api_requisitoslandingpage.php?ews_curp=' . $request->ews_curp . '&ews_token=UA6H5auaxtDo$xcIMz3aYvpntoeCJC7GQ8abH6cUWYS7tvczbBTY0feM7J4C2Shvlq8bBCJC7GQ8abH6cUWYS7tvczbBTY0feM7J4C2Shvlq8bBcNNbYk5YQycBnx_BJXqADLz2Nk0xEWUZzZNMKK4*d&ews_nid_tramite=115850')['wsp_acreditado'];
+        
+        if (!$validacion) {
+            return response()->json([
+                "wsp_mensaje" => "Requisitos no encontrados en la plataforma"
+            ], 400);
+        }
         //Validacion de los datos de respuesta | API-4 Potys
-        $respuesta = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c');
+        $respuesta = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116573&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c');
         
         if ($respuesta == '{"wsp_mensaje":"El CURP proporcionado no es valido"}')  {
-            return $respuesta;
+            return response()->json([
+                "wsp_mensaje" => "El CURP proporcionado no es valido"
+            ], 400);
+        }
+
+        if ($respuesta == '{"wsp_mensaje":"El CURP proporsionado no corresponde al propietario del documento"}')  {
+            return response()->json([
+                "wsp_mensaje" => "Datos no encontrados"
+            ], 400);
         }
 
         //Extraccion de datos de los requisitos subidos | API-4 Potys
-        $marca = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_vehiculo'];
-        $tipo = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_modelo'];
-        $placas = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116092&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_placas'];
-        $nombre_chofer = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_nombre'];
-        $primer_apellido = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_primer_apellido'];
-        $segundo_apellido = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_segundo_apellido'];
-        $numero_licencia = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116046&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_licencia'];
+        $marca = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116579&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_vehiculo'];
+        $tipo = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116579&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_modelo'];
+        $placas = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116579&ews_codigo=0014&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_placas'];
+        $nombre_chofer = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116573&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_nombre'];
+        $primer_apellido = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116573&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_primer_apellido'];
+        $segundo_apellido = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116573&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_segundo_apellido'];
+        $numero_licencia = Http::get('https://apis.roo.gob.mx/repositorio/detalledatosdocumento.php?ews_id_documento=116573&ews_codigo=0008&ews_curp=' . $request->ews_curp . '&ews_token=02e74f10e0327ad868d138f2b4fdd6f090eb8d5ef4ebbd9d00cdd93f40aee8a95092ce6456740f6d39a6ee78d557358de069ea4c9c233d36ff9c7f329bc08ff1dba132f6ab6a3e3d17a8d59e82105f4c')['wsp_numero_licencia'];
 
         //Asignacion del horario de la maniobra segun el tonelaje
-        if($request->ews_tonelada_maniobra < 8000){
+        if($request->ews_tonelada_maniobra < 8){
             $horario = "06:00 A 22:00 HORAS";
         }else{
             $horario = "22:00 A 06:00 HORAS";
@@ -112,6 +129,22 @@ class Api1Controller extends Controller
         $tokenacceso->codigo = 200;
         $tokenacceso->token_id = 1;
         $tokenacceso->save();
+
+        //Guardado de los datos en la tabla Solicitudes
+        $solicitud->llave = $request->ews_llave;
+        $solicitud->id_tramite = $request->ews_id_tramite;
+        $solicitud->no_solicitud = $request->ews_no_solicitud;
+        $solicitud->fecha_solicitud = $request->ews_fecha_solicitud;
+        $solicitud->hora_solicitud = $request->ews_hora_solicitud;
+        $solicitud->fecha_solicitud_api = date("Y-m-d");
+        $solicitud->hora_solicitud_api = date("H:i:s", time());
+
+        $solicitud->no_solicitud_api = $no_solicitud_api;
+        $solicitud->id_estado = 1;
+        $solicitud->save();
+
+        //Optencion del ID de solicitudes
+        $ID = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('id');
 
         //Guardado de los datos en la tabla Permisos
         $permiso = new permisos();
@@ -129,20 +162,8 @@ class Api1Controller extends Controller
         $permiso->direccion = $request->ews_direccion;
         $permiso->horarios = $horario;
         $permiso->folio = $folio;
+        $permiso->id_solicitud = $ID;
         $permiso->save();
-
-        //Guardado de los datos en la tabla Solicitudes
-        $solicitud->llave = $request->ews_llave;
-        $solicitud->id_tramite = $request->ews_id_tramite;
-        $solicitud->no_solicitud = $request->ews_no_solicitud;
-        $solicitud->fecha_solicitud = $request->ews_fecha_solicitud;
-        $solicitud->hora_solicitud = $request->ews_hora_solicitud;
-        $solicitud->fecha_solicitud_api = date("Y-m-d");
-        $solicitud->hora_solicitud_api = date("H:i:s", time());
-
-        $solicitud->no_solicitud_api = $no_solicitud_api;
-        $solicitud->id_estado = 1;
-        $solicitud->save();
         
         //Salida de los datos correctos
         return response()->json([
@@ -156,11 +177,11 @@ class Api1Controller extends Controller
                         "0" => "Datos del permiso de carga y descarga"
                     ],
                     "1" => (Object)[
-                        "0" => "Marca",
+                        "0" => "<b>Marca</b>",
                         "1" => $marca
                     ],
                     "2" => (Object)[
-                        "0" => "Tipo",
+                        "0" => "<b>Tipo</b>",
                         "1" => $tipo
                     ],
                     "3" => (Object)[

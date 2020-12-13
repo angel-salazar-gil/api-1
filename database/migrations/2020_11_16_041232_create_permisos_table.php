@@ -14,7 +14,7 @@ class CreatePermisosTable extends Migration
     public function up()
     {
         Schema::create('permisos', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('marca')->nullable();
             $table->string('tipo')->nullable();
             $table->string('color_vehiculo')->nullable();
@@ -29,8 +29,10 @@ class CreatePermisosTable extends Migration
             $table->string('direccion')->nullable();
             $table->string('horarios')->nullable();
             $table->string('folio')->nullable();
-            //$table->integer('id_solicitud')->unsigned();
-            //$table->foreign('id_solicitud')->references('id')->on ('solicitudes');
+            $table->integer('id_solicitud')->unsigned();
+            $table->foreign('id_solicitud')->references('id')->on('solicitudes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             //$table->integer('firmantes_id')->unsigned();
             //$table->foreign('firmantes_id')->references('id')->on ('firmantes');
             //$table->integer('imagenes_pdf_id')->unsigned();

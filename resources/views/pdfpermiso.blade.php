@@ -29,7 +29,7 @@
                         @endforeach
                         <tr>
                             <td><b>Placas:</b> <br> {{ $permiso->placas }}</td>
-                            <td><b>Recibo de pago estatal:</b> <br></td>
+                            <td><b>Recibo de pago estatal:</b> <br> {{ $permiso->referencia_pago }}</td>
                             <td><b>Toneladas:</b> <br> {{ $permiso->tonelada_maniobra }}</td>
                         </tr>
                         <tr>
