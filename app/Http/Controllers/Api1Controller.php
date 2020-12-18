@@ -80,6 +80,11 @@ class Api1Controller extends Controller
             return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
         }
 
+        if($request->ews_id_tramite != "115850")
+        {
+            return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
+        }
+
         //Validacion de la API-5 Potys
         $validacion = Http::get('https://apis.roo.gob.mx/repositorio/api_requisitoslandingpage.php?ews_curp=' . $request->ews_curp . '&ews_token=UA6H5auaxtDo$xcIMz3aYvpntoeCJC7GQ8abH6cUWYS7tvczbBTY0feM7J4C2Shvlq8bBCJC7GQ8abH6cUWYS7tvczbBTY0feM7J4C2Shvlq8bBcNNbYk5YQycBnx_BJXqADLz2Nk0xEWUZzZNMKK4*d&ews_nid_tramite=115850')['wsp_acreditado'];
         
