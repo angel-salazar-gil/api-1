@@ -16,7 +16,7 @@ class XMLController extends Controller
 
         if ($request->ews_token != $token){
             return response()->json([
-                'wps_mensaje' => 'TOKEN invalido o inexistente',
+                'wsp_mensaje' => 'TOKEN invalido o inexistente',
             ], 403);
         }
 
@@ -25,7 +25,7 @@ class XMLController extends Controller
 
         if ($request->ews_no_solicitud != $no_solicitud) {
             return response()->json([
-                'wps_mensaje' => 'Numero de solicitud no encontrada en la Base de Datos',
+                'wsp_mensaje' => 'Numero de solicitud no encontrada en la Base de Datos',
             ], 400);
         }
 
@@ -34,7 +34,7 @@ class XMLController extends Controller
 
         if ($request->ews_llave != $llave) {
             return response()->json([
-                'wps_mensaje' => 'Llave de la solicitud invalido o inexistente',
+                'wsp_mensaje' => 'Llave de la solicitud invalido o inexistente',
             ], 400);
         }
 

@@ -16,7 +16,7 @@ class CreateSolicitudesTable extends Migration
         Schema::create('solicitudes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('llave')->nullable();
-            $table->smallInteger('id_tramite')->nullable();
+            $table->integer('id_tramite')->nullable();
             $table->string('no_solicitud')->nullable();
             $table->date('fecha_solicitud')->nullable();
             $table->time('hora_solicitud')->nullable();

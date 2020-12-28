@@ -17,7 +17,7 @@ class PDFController extends Controller
 
         if ($request->ews_token != $token) {
             return response()->json([
-                'wps_mensaje' => 'TOKEN invalido o inexistente',
+                'wsp_mensaje' => 'TOKEN invalido o inexistente',
             ], 403);
         }else{
             //Validación del numero de solicitud
@@ -25,7 +25,7 @@ class PDFController extends Controller
 
             if ($numero_permiso == null) {
                 return response()->json([
-                    'wps_mensaje' => 'Numero de solicitud no encontrada en la Base de Datos',
+                    'wsp_mensaje' => 'Numero de solicitud no encontrada en la Base de Datos',
                 ], 400);
             }else{
                 //Validación de la llave de la solicitud
@@ -33,7 +33,7 @@ class PDFController extends Controller
                 
                 if ($request->ews_llave != $llave) {
                     return response()->json([
-                        'wps_mensaje' => 'Llave de la solicitud invalido o inexistente',
+                        'wsp_mensaje' => 'Llave de la solicitud invalido o inexistente',
                     ], 400);
                 }else{
                     //Validacion del id electronico de la solicitud
@@ -41,7 +41,7 @@ class PDFController extends Controller
                     
                     if ($request->ews_id_electronico != $id_electronico) {
                         return response()->json([
-                            'wps_mensaje' => 'ID electronico de la solicitud invalido o inexistente',
+                            'wsp_mensaje' => 'ID electronico de la solicitud invalido o inexistente',
                         ], 400);
                     }else{
                         QrCode::size(300)->generate('https://www.potys.gob.mx/validatramite/?id='.$request->ews_id_electronico, '../public/qrcodes/qrcode.svg');

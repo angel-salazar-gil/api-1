@@ -77,12 +77,19 @@ class Api1Controller extends Controller
         //Validacion del ID del tramite
         if($request->ews_id_tramite != "11")
         {
-            return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
+            if($request->ews_id_tramite != "115850")
+            {
+                return response()->json(["wsp_mensaje" => "ID del tramite incorrecto"], 400);
+            }
         }
 
-        if($request->ews_id_tramite != "115850")
-        {
-            return response()->json(["wps_mensaje" => "ID del tramite incorrecto"], 400);
+        //Validacion del numero de la solicitud
+        $no_solicitud = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('no_solicitud');
+
+        if ($request->ews_no_solicitud == $no_solicitud) {
+            return response()->json([
+                'wsp_mensaje' => 'El numero de solicitud ya existe en la base de datos',
+            ], 400);
         }
 
         //Validacion de la API-5 Potys
@@ -190,39 +197,39 @@ class Api1Controller extends Controller
                         "1" => $tipo
                     ],
                     "3" => (Object)[
-                        "0" => "Color",
+                        "0" => "<b>Color</b>",
                         "1" => $request->ews_color_vehiculo
                     ],
                     "4" => (Object)[
-                        "0" => "Placas",
+                        "0" => "<b>Placas</b>",
                         "1" => $placas
                     ],
                     "5" => (Object)[
-                        "0" => "Toneladas",
+                        "0" => "<b>Toneladas</b>",
                         "1" => $request->ews_tonelada_maniobra
                     ],
                     "6" => (Object)[
-                        "0" => "Nombre del chofer",
+                        "0" => "<b>Nombre del chofer</b>",
                         "1" => $nombre_chofer
                     ],
                     "7" => (Object)[
-                        "0" => "Número de licencia",
+                        "0" => "<b>Número de licencia</b>",
                         "1" => $numero_licencia
                     ],
                     "8" => (Object)[
-                        "0" => "Persona fisica o razón social",
+                        "0" => "<b>Persona fisica o razón social</b>",
                         "1" => $request->ews_persona_razon_social
                     ],
                     "9" => (Object)[
-                        "0" => "Comercio denominado",
+                        "0" => "<b>Comercio denominado</b>",
                         "1" => $request->ews_comercio_denominado
                     ],
                     "10" => (Object)[
-                        "0" => "Drección",
+                        "0" => "<b>Drección</b>",
                         "1" => $request->ews_direccion
                     ],
                     "11" => (Object)[
-                        "0" => "Horario",
+                        "0" => "<b>Horario</b>",
                         "1" => $horario
                     ],
                 ]
