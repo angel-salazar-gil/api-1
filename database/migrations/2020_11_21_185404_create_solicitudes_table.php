@@ -14,7 +14,7 @@ class CreateSolicitudesTable extends Migration
     public function up()
     {
         Schema::create('solicitudes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id_solicitud');
             $table->string('llave')->nullable();
             $table->integer('id_tramite')->nullable();
             $table->string('no_solicitud')->nullable();
@@ -36,7 +36,7 @@ class CreateSolicitudesTable extends Migration
             $table->string('stripe_red')->nullable();
             $table->string('stripe_estado')->nullable();
             $table->string('xml_url')->nullable();
-            $table->tinyInteger('no_consulta')->nullable();
+            $table->Integer('no_consulta')->nullable();
             //$table->Integer('id_estado')->unsigned();
             //$table->foreign('id_estado')->references('id')->on ('estados');
             $table->timestamps();

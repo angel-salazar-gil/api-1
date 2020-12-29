@@ -43,6 +43,7 @@ class XMLController extends Controller
         $affected = DB::table('solicitudes')
               ->where('no_solicitud', $request->ews_no_solicitud)
               ->update([
+                  'id_estado' => 4,
                   'id_electronico' => $request->ews_id_electronico,
                   'referencia_pago' => $request->ews_referencia_pago,
                   'fecha_pago' => $request->ews_fecha_pago,

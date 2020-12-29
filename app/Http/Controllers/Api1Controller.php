@@ -156,7 +156,7 @@ class Api1Controller extends Controller
         $solicitud->save();
 
         //Optencion del ID de solicitudes
-        $ID = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('id');
+        $ID = DB::table('solicitudes')->where('no_solicitud', $request->ews_no_solicitud)->value('id_solicitud');
 
         //Guardado de los datos en la tabla Permisos
         $permiso = new permisos();
