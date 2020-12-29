@@ -53,7 +53,7 @@ class PDFController extends Controller
                         
                         //Creación del numero de consulta
                         $config=['table'=>'permisos','length'=>10,'prefix'=>date("Y")];
-                        $folio = IdGenerator::generate($config);
+                        $folio = IdGenerator::generate($config) + Permisos::count();
                         
                         $affected = DB::table('solicitudes')
                         ->where('no_solicitud', $request->ews_no_solicitud)
