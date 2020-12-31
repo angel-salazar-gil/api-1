@@ -77,15 +77,15 @@
                     $mes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"][date("n") - 1];
                 ?>
 
-                <p class="texto float-right">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p>
-                <div class="mx-auto d-block">
-                    <p class="texto text-center mt-4"><b>Atentamente</b></p>
-                    <br>
-                    <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
+                <p class="texto float-right">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p><br>
+                    <p class="texto text-center mt-1"><b>Atentamente</b></p>
+                <div class="contenedor">
+                <img class="float-left ml-5" src="qrcodes/qrcode.svg" height="90">
+                <img src="images/firma_Director_Transito.jpg" height="90" width="150">
+                <img class="float-right mr-10" src="images/sello_direccion_transito.jpg" height="100" width="150">
                 </div>
-
-                <img class="float-left mt-2 ml-5" src="qrcodes/qrcode.svg" height="90" alt="">
-
+                <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
+                
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@
         }
 
         .texto{
-            font-size: 12.5px;
+            font-size: 12px;
         }
 
         .folio{
@@ -148,7 +148,12 @@
             background-color: lightblue;
             color: white;
             text-align: center;
-            line-height: 35px;
+            line-height: 30px;
+        }
+
+        .contenedor{
+	        text-align: center;
+           
         }
     </style>
 
