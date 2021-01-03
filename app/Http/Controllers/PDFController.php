@@ -76,7 +76,7 @@ class PDFController extends Controller
                             'id_estado' => 6
                             ]);
                             
-                        return $pdf->download('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
+                        return $pdf->stream('Permiso_para_realizar_maniobras_de_carga_y_descarga.pdf');
                     }
                 }
             }

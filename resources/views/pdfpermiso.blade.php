@@ -78,22 +78,17 @@
                 ?>
 
                 <p class="texto float-right">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p><br>
-                    <p class="texto text-center mt-1"><b>Atentamente</b></p>
+                <p class="texto text-center mt-1"><b>Atentamente</b></p>
                 <div class="contenedor">
-                <img class="float-left ml-5" src="qrcodes/qrcode.svg" height="90">
-                <img src="images/firma_Director_Transito.jpg" height="90" width="150">
-                <img class="float-right mr-10" src="images/sello_direccion_transito.jpg" height="100" width="150">
+                    <img class="float-left ml-5" src="qrcodes/qrcode.svg" height="100">
+                    <img class="center ml-5" src="images/firma_director_transito.jpg" height="75" width="110">
+                    <img class="float-right mr-10 mt-0 pt-0" src="images/sello_direccion_transito.jpg" height="150" width="190">
                 </div>
                 <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
                 
             </div>
         </div>
     </div>
-        {{--<div class="title m-b-md"> {!!QrCode::size(300)->generate("www.nigmacode.com") !!} </div>--}}
-    <footer>
-        <p>Logos pie de pagina</p>
-     
-    </footer>
 
     <style>
        
@@ -137,18 +132,6 @@
             right: 0cm;
             height: 2cm;
             margin-bottom: -1cm;
-        }
-
-        footer{
-            position: fixed;
-            bottom: 0cm;
-            left: 0cm;
-            right: 0cm;
-            height: 1.5cm;
-            background-color: lightblue;
-            color: white;
-            text-align: center;
-            line-height: 30px;
         }
 
         .contenedor{
