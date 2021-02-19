@@ -68,7 +68,7 @@ class PDFController extends Controller
                         ->where('solicitudes.no_solicitud','=',$request->ews_no_solicitud)
                         ->get();
                         
-                        $pdf = PDF::loadView('pdfpermiso', compact('permisos'));
+                        $pdf = PDF::loadView('pdfpermiso', compact('permisos'))->setPaper('letter','portrait');
                         
                         $affected = DB::table('solicitudes')
                         ->where('no_solicitud', $request->ews_no_solicitud)

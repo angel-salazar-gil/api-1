@@ -1,6 +1,9 @@
 <html>
 <head>
     <title>Permiso PDF</title>
+    <style>
+        /*@page { size: 500pt 500pt; }*/
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 </head>
 <body>
@@ -8,15 +11,15 @@
         <img class="float-left mt-3 ml-5 pl-5" src="assets/img/logo1.png" width="80" alt="">
         <img class="float-right mt-3 mr-5 pr-5" src="assets/img/logo_2.png" height="60" alt="">
     </header>
-    <div class="container">
-        <p class="tittle mt-0 pt-0">PERMISO PARA REALIZAR MANIOBRAS DE CARGA Y DESCARGA</p>
+    <div class="container mt-0 pt-0">
+        <p class="tittle mt-0 pt-0 mb-2 pb-0">PERMISO PARA REALIZAR MANIOBRAS DE CARGA Y DESCARGA</p>
         <div class="container">
             @foreach ($permisos as $permiso)
             <div class="folio texto border border-3 border-dark"><b>Permiso:</b> {{ $permiso->folio }}</div>
             @endforeach
             <div class="container">
-                <p class="texto">A QUIEN CORRESPONDA:</p>
-                <p class="texto">Por medio de la precente la Dirección de Tráncito, concede permiso al vehículo de las siguientes características:</p>
+                <p class="texto mb-1 pb-0">A QUIEN CORRESPONDA:</p>
+                <p class="texto mb-1 mt-2 pb-0">Por medio de la precente la Dirección de Tráncito, concede permiso al vehículo de las siguientes características:</p>
                 
                 <table class="table table-bordered texto">
                     <tbody>
@@ -42,24 +45,52 @@
                     </tbody>
                 </table>
 
-                <p class="texto">Para que pueda realizar manobras de carga y descarga en el primer cuadro de la ciudad.</p>
+                <p class="texto mt-0 mb-1 pt-0 pb-0">Para que pueda realizar manobras de carga y descarga en el primer cuadro de la ciudad.</p>
 
                 <table class="table texto table-bordered">
                     <tbody>
                         <tr>
-                            <td colspan="3"><b class=" mr-5">Comercio denominado:</b> {{ $permiso->comercio_denominado }}</td>
+                            <td colspan="4"><b class=" mr-5">Comercio denominado:</b> {{ $permiso->comercio_denominado }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><b>Ubicado en:</b> {{ $permiso->direccion }}</td>
+                            <td colspan="4"><b>Ubicado en:</b> {{ $permiso->direccion }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3"><b>Con horario según su peso bruto:</b> de {{ $permiso->horarios }}</td>
+                            <td colspan="2">
+                                <b>Con horario según su peso bruto:</b>{{-- de {{ $permiso->horarios }} --}}
+                                <table class="mb-0 texto">
+                                    <tbody class="m-0 p-1">
+                                        <tr class="m-0 p-1">
+                                            <td class="m-0 p-1 text-center text-bold"><b>PESO</b></td>
+                                            <td class="m-0 p-1 text-center text-bold"><b>HORARIO</b></td>
+                                        </tr>
+                                        <tr class="m-0 p-1">
+                                            <td class="m-0 p-1 <?php if ($permiso->tonelada_maniobra <= 8) { ?> table-active <?php } ?>">750 KG. A 8 TONELADAS</td>
+                                            <td class="m-0 p-1 <?php if ($permiso->tonelada_maniobra <= 8) { ?> table-active <?php } ?>">06:00 A 22:00 HORAS</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td colspan="2">
+                                <table class="mb-0 mt-3 texto">
+                                    <tbody class="m-0 p-1">
+                                        <tr class="m-0 p-1">
+                                            <td class="m-0 p-1 text-center text-bold"><b>PESO</b></td>
+                                            <td class="m-0 p-1 text-center text-bold"><b>HORARIO</b></td>
+                                        </tr>
+                                        <tr class="m-0 p-1">
+                                            <td class="m-0 p-1 <?php if ($permiso->tonelada_maniobra > 8) { ?> table-active <?php } ?>">MAYOR A 8 TONELADAS</td>
+                                            <td class="m-0 p-1 <?php if ($permiso->tonelada_maniobra > 8) { ?> table-active <?php } ?>">22:00 A 06:00 HORAS</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <p class="texto font-weight-bold"><u>QUEDA ESTRICTAMENTE PROHIBIDO ESTACIONARSE SOBRE LAS AVENIDAS:</u></p>
-                <ol class="texto mt-0 font-weight-bold">
+                <p class="texto font-weight-bold mb-1"><u>QUEDA ESTRICTAMENTE PROHIBIDO ESTACIONARSE SOBRE LAS AVENIDAS:</u></p>
+                <ol class="texto mt-0 mb-1 font-weight-bold">
                     <li><u>ÁLVARO OBREGÓN</u></li>
                     <li><u>HÉROES</u></li></u>
                 </ol>
@@ -77,12 +108,12 @@
                     $mes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"][date("n") - 1];
                 ?>
 
-                <p class="texto float-right">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p><br>
-                <p class="texto text-center mt-1"><b>Atentamente</b></p>
+                <p class="texto float-right mb-0 pb-0">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p><br>
+                <p class="texto text-center mt-0"><b>Atentamente</b></p>
                 <div class="contenedor">
-                    <img class="float-left ml-5" src="qrcodes/qrcode.svg" height="100">
-                    <img class="center ml-5" src="images/firma_director_transito.jpg" height="75" width="110">
-                    <img class="float-right mr-10 mt-0 pt-0" src="images/sello_direccion_transito.jpg" height="150" width="190">
+                    <img class="float-left ml-5" src="qrcodes/qrcode.svg" height="90">
+                    <img class="center ml-5" src="images/firma_director_transito.jpg" height="75" width="90">
+                    <img class="float-right mr-10 mt-0 pt-0" src="images/sello_direccion_transito.jpg" height="130" width="170">
                 </div>
                 <p class="texto text-center"><b>CMTE. JORGE CESAR SANTANA POOT</b></p>
                 
@@ -114,7 +145,7 @@
         }
 
         .texto{
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .folio{
