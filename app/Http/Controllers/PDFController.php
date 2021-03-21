@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use PDF;
 use App\Permisos;
+use Jenssegers\Date\Date;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -67,9 +68,23 @@ class PDFController extends Controller
                         ->select('*')
                         ->where('solicitudes.no_solicitud','=',$request->ews_no_solicitud)
                         ->get();
+
+                        // Fecha de generación del PDF
+                        $affected = DB::table('permisos')
+                        ->where('id', $permisos[0]->id)
+                        ->update([
+                            'fecha_generacion_pdf' => $permisos[0]->fecha_solicitud_api
+                            ]);
+
+                        //Llamada de los datos en la Base de datos
+                        $permisos = DB::table('solicitudes')
+                        ->join('permisos', 'solicitudes.id_solicitud', '=', 'permisos.id_solicitud')
+                        ->select('*')
+                        ->where('solicitudes.no_solicitud','=',$request->ews_no_solicitud)
+                        ->get();
                         
                         $pdf = PDF::loadView('pdfpermiso', compact('permisos'))->setPaper('letter','portrait');
-                        
+                        // Cambio del estatos del tramite
                         $affected = DB::table('solicitudes')
                         ->where('no_solicitud', $request->ews_no_solicitud)
                         ->update([

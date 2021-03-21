@@ -15,6 +15,7 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "haruncpi/laravel-id-generator": "^1.0",
+        "jenssegers/date": "^4.0",
         "laravel/framework": "^7.0",
         "laravel/passport": "~9.0",
         "laravel/tinker": "^2.0",

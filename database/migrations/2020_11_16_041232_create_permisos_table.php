@@ -30,6 +30,7 @@ class CreatePermisosTable extends Migration
             $table->string('horarios')->nullable();
             $table->string('folio')->nullable();
             $table->integer('id_solicitud')->unsigned();
+            $table->date('fecha_generacion_pdf')->nullable();
             $table->foreign('id_solicitud')->references('id_solicitud')->on('solicitudes')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

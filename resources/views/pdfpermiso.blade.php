@@ -1,3 +1,7 @@
+<?php 
+    use Jenssegers\Date\Date;
+?>
+
 <html>
 <head>
     <title>Permiso PDF</title>
@@ -104,11 +108,16 @@
                     tránsito. </p>
 
                 <?php
-                    date_default_timezone_set("America/Mexico_City");
-                    $mes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"][date("n") - 1];
+                    Date::setLocale('ES');
+                    $fechadia = strftime("%d",strtotime($permisos[0]->fecha_generacion_pdf));
+                    $dia = Date::createFromFormat('d', $fechadia)->format('j');
+                    $fechames = strftime("%B",strtotime($permisos[0]->fecha_generacion_pdf));
+                    $mes = Date::createFromFormat('F', $fechames)->format('F');
+                    $fechaanio = strftime("%Y",strtotime($permisos[0]->fecha_generacion_pdf));
+                    $anio = Date::createFromFormat('Y', $fechaanio)->format('Y');
                 ?>
 
-                <p class="texto float-right mb-0 pb-0">Chetumal Q. Roo, a <b><?php echo date("d"); ?></b> de <b><?php echo $mes; ?></b> del <b><?php echo date("Y"); ?></b></p><br>
+                <p class="texto float-right mb-0 pb-0">Chetumal Q. Roo, a <b><?php echo $dia; ?></b> de <b class="text-uppercase"><?php echo $mes; ?></b> del <b><?php echo $anio; ?></b></p><br>
                 <p class="texto text-center mt-0"><b>Atentamente</b></p>
                 <div class="contenedor">
                     <img class="float-left ml-5" src="qrcodes/qrcode.svg" height="90">
